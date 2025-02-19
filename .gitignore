@@ -70,3 +70,14 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+
+# Ignore large build artifacts
+FIT/Library/Bee/artifacts/WebGL/GameAssembly/release_WebGL_wa*/GameAssembly.a
+FIT/Library/Bee/artifacts/WebGL/il2cppOutput/build/GameAssembly.a
+FIT/Library/PackageCache/com.unity.burst/.Runtime/libburst-llvm-16.dylib
+
+# Ignore all Library folder contents (except Packages and required metadata)
+FIT/Library/
+!FIT/Library/PackageCache/
+!FIT/Library/EditorInstance.json
