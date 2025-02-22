@@ -55,16 +55,12 @@ public class RotateMatchGame : MonoBehaviour
   void RotateObject()
     {
         if (IsPointerOverUIObject()) return;
-        if (Input.GetMouseButtonUp(0))
-        {
-            isNotTouch = false;
-            lastTouchTime= Time.time;
-
-        }
+       
 
         if (Input.GetMouseButtonDown(0))
         {
-
+            isNotTouch = false;
+            lastTouchTime = Time.time;
 
 
             previousMousePosition = Input.mousePosition;

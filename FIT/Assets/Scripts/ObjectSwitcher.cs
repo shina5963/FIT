@@ -37,6 +37,8 @@ public class ObjectSwitcher : MonoBehaviour
         UpdateActiveObjects();
         if (RankUI.activeSelf)
             playFabLeaderboardUI.GetLeaderboard();
+
+        thankText.gameObject.SetActive(false);
     }
     public GameObject RankUI;
     public PlayFabLeaderboardUI playFabLeaderboardUI;
@@ -54,6 +56,8 @@ public class ObjectSwitcher : MonoBehaviour
     }
     public string activeObjectName;
     public TMP_Text nameText;
+    public TMP_Text thankText;
+
     void UpdateActiveObjects()
     {
         for (int i = 0; i < objects.Length; i++)
