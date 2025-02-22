@@ -1,4 +1,6 @@
 using UnityEngine;
+using TMPro;
+
 using UnityEngine.UI;
 
 public class ObjectSwitcher : MonoBehaviour
@@ -6,6 +8,7 @@ public class ObjectSwitcher : MonoBehaviour
     public GameObject[] objects; // 切り替えるオブジェクト配列
     public GameObject Target;    // 子オブジェクトを探す親オブジェクト
     public Button switchButton;  // ボタン
+    public Button RankButton;  // ボタン
 
     private int currentIndex = 0; // 現在のアクティブオブジェクトのインデックス
 
@@ -14,6 +17,11 @@ public class ObjectSwitcher : MonoBehaviour
         if (switchButton != null)
         {
             switchButton.onClick.AddListener(SwitchObject);
+        }
+
+        if (RankButton != null)
+        {
+            RankButton.onClick.AddListener(ShowRank);
         }
 
         // 初期状態を設定
@@ -27,8 +35,25 @@ public class ObjectSwitcher : MonoBehaviour
 
         // アクティブなオブジェクトを更新
         UpdateActiveObjects();
+        if (RankUI.activeSelf)
+            playFabLeaderboardUI.GetLeaderboard();
     }
-
+    public GameObject RankUI;
+    public PlayFabLeaderboardUI playFabLeaderboardUI;
+    void ShowRank()
+    {
+        if (RankUI.activeSelf)
+        {
+            RankUI.SetActive(false);
+            Time.timeScale = 1f;
+        }
+        else { RankUI.SetActive(true);
+            Time.timeScale = 0f;
+            playFabLeaderboardUI.GetLeaderboard();
+        }
+    }
+    public string activeObjectName;
+    public TMP_Text nameText;
     void UpdateActiveObjects()
     {
         for (int i = 0; i < objects.Length; i++)
@@ -38,7 +63,10 @@ public class ObjectSwitcher : MonoBehaviour
         }
 
         // `objects[currentIndex]` と同じ名前を持つ `Target` の子オブジェクトを探す
-        string activeObjectName = objects[currentIndex].name;
+        activeObjectName = objects[currentIndex].name;
+
+        nameText.text = activeObjectName;
+
         foreach (Transform child in Target.transform)
         {
             child.gameObject.SetActive(child.gameObject.name == activeObjectName);

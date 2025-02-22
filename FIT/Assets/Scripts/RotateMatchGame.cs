@@ -250,7 +250,7 @@ public class RotateMatchGame : MonoBehaviour
     }
 
     float finishTime;
-
+    public PlayFabLeaderboardSender playFabLeaderboardSender;
    void GameOver()
     {
         //resultText.gameObject.SetActive(true);
@@ -260,7 +260,8 @@ public class RotateMatchGame : MonoBehaviour
       //  float elapsedTime = Time.time - startTime;
          finishTime = Time.time - firstSuccessTime; // 🟢 1回目成功時からの経過時間
 
-        scoreText.text = finishTime.ToString("F2");
+        scoreText.text = finishTime.ToString("F2")+"s";
+        playFabLeaderboardSender.SendScore(finishTime);
         //resultText.text = "Game Over! Time Taken: " + elapsedTime.ToString("F2") + " seconds";
     }
 }

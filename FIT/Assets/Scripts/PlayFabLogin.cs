@@ -16,11 +16,13 @@ public class PlayFabLogin : MonoBehaviour
         {
             // 既存のIDを取得
             uniqueID = PlayerPrefs.GetString(PlayerPrefsKey);
+            print("ID"+uniqueID);
         }
         else
         {
             // 新しいGUIDを生成
             uniqueID = Guid.NewGuid().ToString();
+            print("NewID" + uniqueID);
             // PlayerPrefsに保存
             PlayerPrefs.SetString(PlayerPrefsKey, uniqueID);
             PlayerPrefs.Save();
@@ -38,11 +40,11 @@ public class PlayFabLogin : MonoBehaviour
 
     private void OnLoginSuccess(LoginResult result)
     {
-        Debug.Log("ログイン成功！");
+        Debug.Log("LoginSuccess");
     }
 
     private void OnLoginFailure(PlayFabError error)
     {
-        Debug.LogError("ログイン失敗: " + error.GenerateErrorReport());
+        Debug.LogError("LoginFailure: " + error.GenerateErrorReport());
     }
 }
