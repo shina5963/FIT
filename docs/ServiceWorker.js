@@ -1,9 +1,9 @@
 const cacheName = "DefaultCompany-FIT-1.0";
 const contentToCache = [
-    "Build/d2779af774c30fbec55ad595eb05d392.loader.js",
+    "Build/e5054e290e5f4567834e43329155f23c.loader.js",
     "Build/1ab213b6743ca9a8cc0e41192190b006.framework.js",
-    "Build/fb6b1d00bf86c6b24de9be0ba8c98db8.data",
-    "Build/529de8b8afbf556d8b951f5c9d378148.wasm",
+    "Build/e1f524b0bf577bcfbdde0906adb34ab5.data",
+    "Build/83bedea8806f3c912557c9b298a3bf7b.wasm",
     "TemplateData/style.css"
 
 ];

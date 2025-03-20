@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems; // 🔵 UIの判定に必要
 using System.Collections.Generic;
 using static UnityEngine.GridBrushBase;
+using UnityEngine.InputSystem;
 
 public class RotateMatchGame : MonoBehaviour
 {
@@ -95,6 +96,7 @@ public class RotateMatchGame : MonoBehaviour
    
         RotateObject();
         RotateObjectWithKeys();
+        RotateObjectWithScroll();
 
         if ( !isGameOver&& score>0)
             UpdateScoreText();
@@ -154,6 +156,25 @@ public class RotateMatchGame : MonoBehaviour
         }
 
     }
+    public float scrollRotationSpeed = 200f;
+
+    private void RotateObjectWithScroll()
+    {
+       // float scrollVertical = Input.GetAxis("Mouse ScrollWheel");
+        //float scrollHorizontal = Input.GetAxis("Mouse HorizontalWheel");
+
+
+        Vector2 scroll = Mouse.current.scroll.ReadValue();
+        float scrollHorizontal= scroll.x; // 横スクロール値
+        float scrollVertical = scroll.y;   // 縦スクロール値
+
+        if (scrollVertical != 0 || scrollHorizontal != 0)
+        {
+            Vector3 torque = new Vector3(-scrollVertical * scrollRotationSpeed, scrollHorizontal * scrollRotationSpeed, 0);
+            playerRigidbody.AddTorque(torque);
+        }
+    }
+
 
     // 🟢 カメラの背景色を変更する関数を追加
     private float currentIntensity = 0f; // 現在の背景色の明るさ
