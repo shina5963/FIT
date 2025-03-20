@@ -52,32 +52,26 @@ public class RotateMatchGame : MonoBehaviour
     }
     bool isNotTouch = true;
 
-  void RotateObject()
+    private void RotateObject()
     {
         if (IsPointerOverUIObject()) return;
-       
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
             isNotTouch = false;
             lastTouchTime = Time.time;
-
-
             previousMousePosition = Input.mousePosition;
-            playerRigidbody.angularDamping = lowAngularDrag; // 低い角速度減衰
+            playerRigidbody.angularDamping = lowAngularDrag;
         }
         if (isNotTouch) return;
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
             Vector3 delta = Input.mousePosition - previousMousePosition;
             if (delta.magnitude > 0)
             {
-                // 解像度に依存しない回転処理
                 float yaw = -delta.x / Screen.width * 500f * rotationSpeed;
                 float pitch = delta.y / Screen.height * 500f * rotationSpeed;
-
-
                 Vector3 torque = new Vector3(pitch, yaw, 0);
                 playerRigidbody.AddTorque(torque);
                 playerRigidbody.angularDamping = lowAngularDrag;
@@ -86,7 +80,6 @@ public class RotateMatchGame : MonoBehaviour
             {
                 playerRigidbody.angularDamping = highAngularDrag;
             }
-
             previousMousePosition = Input.mousePosition;
         }
         else
@@ -101,6 +94,7 @@ public class RotateMatchGame : MonoBehaviour
     {
    
         RotateObject();
+        RotateObjectWithKeys();
 
         if ( !isGameOver&& score>0)
             UpdateScoreText();
@@ -135,6 +129,30 @@ public class RotateMatchGame : MonoBehaviour
                 ScorePoint(); // スコア加算
             }
         }
+    }
+    public float keyRotationSpeed = 100f;
+    private void RotateObjectWithKeys()
+    {
+
+        if (isNotTouch) return;
+
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        {
+            playerRigidbody.AddTorque(Vector3.right * keyRotationSpeed * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        {
+            playerRigidbody.AddTorque(Vector3.left * keyRotationSpeed * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            playerRigidbody.AddTorque(Vector3.up* keyRotationSpeed * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            playerRigidbody.AddTorque(Vector3.down * keyRotationSpeed * Time.deltaTime);
+        }
+
     }
 
     // 🟢 カメラの背景色を変更する関数を追加
