@@ -158,21 +158,55 @@ public class RotateMatchGame : MonoBehaviour
     }
     public float scrollRotationSpeed = 200f;
 
+
+    public float scrollThreshold = 5.0f; // WebGL 対応のためのしきい値
+ 
     private void RotateObjectWithScroll()
     {
-       // float scrollVertical = Input.GetAxis("Mouse ScrollWheel");
-        //float scrollHorizontal = Input.GetAxis("Mouse HorizontalWheel");
-
+        if (Mouse.current == null) return;
 
         Vector2 scroll = Mouse.current.scroll.ReadValue();
-        float scrollHorizontal= scroll.x; // 横スクロール値
-        float scrollVertical = scroll.y;   // 縦スクロール値
+        float scrollHorizontal = scroll.x;
+        float scrollVertical = scroll.y;
 
-        if (scrollVertical != 0 || scrollHorizontal != 0)
+#if UNITY_WEBGL && !UNITY_EDITOR
+    // WebGLでは値が大きすぎることがあるため，補正を入れる
+    scrollHorizontal *= 0.1f;
+    scrollVertical *= 0.1f;
+#endif
+        // 固定のトルク値
+        float fixedVerticalTorque = 0.25f;
+        float fixedHorizontalTorque = 0.25f;
+
+        // スクロール方向が検出されたときだけ固定のトルクを加える
+        float torqueX = 0f;
+        float torqueY = 0f;
+
+        if (Mathf.Abs(scrollVertical) > scrollThreshold / 5)
         {
-            Vector3 torque = new Vector3(-scrollVertical * scrollRotationSpeed, scrollHorizontal * scrollRotationSpeed, 0);
-            playerRigidbody.AddTorque(torque);
+            playerRigidbody.angularDamping = highAngularDrag;
         }
+        if (Mathf.Abs(scrollHorizontal) > scrollThreshold/5)
+        {
+            playerRigidbody.angularDamping = highAngularDrag;
+        }
+
+            if (Mathf.Abs(scrollVertical) > scrollThreshold)
+        {
+            torqueX = -Mathf.Sign(scrollVertical) * fixedVerticalTorque * scrollRotationSpeed;
+            playerRigidbody.angularDamping = lowAngularDrag;
+      
+    }
+
+        
+        if (Mathf.Abs(scrollHorizontal) > scrollThreshold)
+        {
+            torqueY = Mathf.Sign(scrollHorizontal) * fixedHorizontalTorque * scrollRotationSpeed;
+            playerRigidbody.angularDamping = lowAngularDrag;
+        }
+       
+        Vector3 torque = new Vector3(torqueX, torqueY, 0f);
+        playerRigidbody.AddTorque(torque);
     }
 
 
